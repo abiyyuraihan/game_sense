@@ -11,16 +11,22 @@ import {
   Download,
   Zap,
   Terminal,
+  Users,
+  Joystick,
 } from "lucide-react";
 
 const GameRecommendationApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedMoods, setSelectedMoods] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [device, setDevice] = useState("");
+  const [playMode, setPlayMode] = useState("");
   const [recommendations, setRecommendations] = useState(null);
   const [moodDropdownOpen, setMoodDropdownOpen] = useState(false);
+  const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
   const [deviceDropdownOpen, setDeviceDropdownOpen] = useState(false);
+  const [playModeDropdownOpen, setPlayModeDropdownOpen] = useState(false);
   const resultsRef = useRef(null);
 
   const initializeAI = () => {
@@ -52,9 +58,29 @@ const GameRecommendationApp = () => {
     { id: "creative", name: "Mood: Creative" },
   ];
 
+  const genres = [
+    { id: "action", name: "Action" },
+    { id: "adventure", name: "Adventure" },
+    { id: "rpg", name: "RPG" },
+    { id: "strategy", name: "Strategy" },
+    { id: "simulation", name: "Simulation" },
+    { id: "sports", name: "Sports" },
+    { id: "racing", name: "Racing" },
+    { id: "puzzle", name: "Puzzle" },
+    { id: "shooter", name: "Shooter" },
+    { id: "platformer", name: "Platformer" },
+  ];
+
   const devices = [
     { id: "pc", name: "Computer/Laptop" },
     { id: "mobile", name: "Mobile Phone" },
+    { id: "playstation", name: "PlayStation" },
+  ];
+
+  const playModes = [
+    { id: "single", name: "Single Player" },
+    { id: "multi", name: "Multiplayer" },
+    { id: "both", name: "Both" },
   ];
 
   const toggleMood = (moodId) => {
@@ -62,6 +88,14 @@ const GameRecommendationApp = () => {
       prev.includes(moodId)
         ? prev.filter((id) => id !== moodId)
         : [...prev, moodId]
+    );
+  };
+
+  const toggleGenre = (genreId) => {
+    setSelectedGenres((prev) =>
+      prev.includes(genreId)
+        ? prev.filter((id) => id !== genreId)
+        : [...prev, genreId]
     );
   };
 
@@ -89,7 +123,13 @@ const GameRecommendationApp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedMoods.length === 0 || !device) return;
+    if (
+      selectedMoods.length === 0 ||
+      !device ||
+      selectedGenres.length === 0 ||
+      !playMode
+    )
+      return;
 
     setLoading(true);
     setError(null);
@@ -105,7 +145,11 @@ const GameRecommendationApp = () => {
       - Mood: ${selectedMoods
         .map((id) => moods.find((m) => m.id === id)?.name)
         .join(", ")}
+      - Genre: ${selectedGenres
+        .map((id) => genres.find((g) => g.id === id)?.name)
+        .join(", ")}
       - Device: ${device === "pc" ? "PC/Laptop" : "Mobile Phone"}
+      - Play Mode: ${playModes.find((p) => p.id === playMode)?.name}
 
       Answer MUST be in valid JSON with this structure:
       {
@@ -113,7 +157,7 @@ const GameRecommendationApp = () => {
           "suggestedGenres": [
             {
               "name": "Genre Name",
-              "description": "Why this genre matches the mood"
+              "description": "Why this genre matches the mood and preferences"
             }
           ],
           "onlineGames": [
@@ -125,7 +169,8 @@ const GameRecommendationApp = () => {
               "price": "Free/Paid",
               "platform": "Platform name",
               "downloadUrl": "URL to download or buy the game",
-              "storeType": "Steam/Epic/PlayStore/AppStore/etc"
+              "storeType": "Steam/Epic/PlayStore/AppStore/etc",
+              "playMode": "Single/Multi/Both"
             }
           ],
           "offlineGames": [
@@ -137,11 +182,12 @@ const GameRecommendationApp = () => {
               "price": "Free/Paid",
               "platform": "Platform name",
               "downloadUrl": "URL to download or buy the game",
-              "storeType": "Steam/Epic/PlayStore/AppStore/etc"
+              "storeType": "Steam/Epic/PlayStore/AppStore/etc",
+              "playMode": "Single/Multi/Both"
             }
           ],
           "moodBoostPotential": "High/Medium/Low",
-          "recommendations": ["Specific gaming suggestions for the mood"]
+          "recommendations": ["Specific gaming suggestions for the mood and preferences"]
         }
       }`;
 
@@ -265,6 +311,49 @@ const GameRecommendationApp = () => {
 
                 <div>
                   <label className="block text-base font-medium text-cyan-400 mb-2">
+                    Genre
+                  </label>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setGenreDropdownOpen(!genreDropdownOpen)}
+                      className="w-full bg-black border border-pink-500/50 rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
+                    >
+                      <span className="text-pink-500">
+                        {selectedGenres.length > 0
+                          ? `${selectedGenres.length} Genres Selected`
+                          : "Select Genre"}
+                      </span>
+                      <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-pink-500" />
+                    </button>
+
+                    {genreDropdownOpen && (
+                      <div className="absolute z-10 mt-1 w-full bg-black border border-pink-500/30 rounded-xl shadow-lg max-h-64 overflow-y-auto">
+                        <div className="p-3 grid grid-cols-1 gap-2">
+                          {genres.map((genre) => (
+                            <label
+                              key={genre.id}
+                              className="flex items-center p-2 hover:bg-pink-500/10 rounded-lg cursor-pointer transition-colors duration-150"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedGenres.includes(genre.id)}
+                                onChange={() => toggleGenre(genre.id)}
+                                className="h-4 w-4 text-pink-500 focus:ring-pink-500 border-pink-500 rounded bg-black"
+                              />
+                              <span className="ml-2 text-sm text-pink-500 font-mono">
+                                {genre.name}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-base font-medium text-cyan-400 mb-2">
                     Device
                   </label>
                   <div className="relative">
@@ -303,9 +392,57 @@ const GameRecommendationApp = () => {
                   </div>
                 </div>
 
+                <div>
+                  <label className="block text-base font-medium text-cyan-400 mb-2">
+                    Play Mode
+                  </label>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPlayModeDropdownOpen(!playModeDropdownOpen)
+                      }
+                      className="w-full bg-black border border-pink-500/50 rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
+                    >
+                      <span className="text-pink-500">
+                        {playMode
+                          ? playModes.find((p) => p.id === playMode)?.name
+                          : "Select Play Mode"}
+                      </span>
+                      <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-pink-500" />
+                    </button>
+
+                    {playModeDropdownOpen && (
+                      <div className="absolute z-10 mt-1 w-full bg-black border border-pink-500/30 rounded-xl shadow-lg">
+                        <div className="py-1">
+                          {playModes.map((mode) => (
+                            <button
+                              key={mode.id}
+                              type="button"
+                              onClick={() => {
+                                setPlayMode(mode.id);
+                                setPlayModeDropdownOpen(false);
+                              }}
+                              className="w-full px-4 py-2 text-sm text-pink-500 hover:bg-pink-500/10 text-left transition-colors duration-150 font-mono"
+                            >
+                              {mode.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <button
                   type="submit"
-                  disabled={selectedMoods.length === 0 || !device || loading}
+                  disabled={
+                    selectedMoods.length === 0 ||
+                    !device ||
+                    selectedGenres.length === 0 ||
+                    !playMode ||
+                    loading
+                  }
                   className="w-full bg-pink-500/20 text-pink-500 rounded-xl px-4 py-3 hover:bg-pink-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                 >
                   {loading ? (
