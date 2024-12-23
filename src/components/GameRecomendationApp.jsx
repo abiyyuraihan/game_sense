@@ -40,21 +40,21 @@ const GameRecommendationApp = () => {
   };
 
   const moods = [
-    { id: "happy", name: "Mood: Bahagia" },
-    { id: "sad", name: "Mood: Sedih" },
-    { id: "stressed", name: "Mood: Stress" },
-    { id: "excited", name: "Mood: Bersemangat" },
-    { id: "bored", name: "Mood: Bosan" },
-    { id: "lonely", name: "Mood: Kesepian" },
-    { id: "angry", name: "Mood: Marah" },
-    { id: "relaxed", name: "Mood: Santai" },
-    { id: "anxious", name: "Mood: Cemas" },
-    { id: "creative", name: "Mood: Kreatif" },
+    { id: "happy", name: "Suasana Hati: Gembira" },
+    { id: "sad", name: "Suasana Hati: Sedih" },
+    { id: "stressed", name: "Suasana Hati: Tertekan" },
+    { id: "excited", name: "Suasana Hati: Bersemangat" },
+    { id: "bored", name: "Suasana Hati: Bosan" },
+    { id: "lonely", name: "Suasana Hati: Kesepian" },
+    { id: "angry", name: "Suasana Hati: Marah" },
+    { id: "relaxed", name: "Suasana Hati: Santai" },
+    { id: "anxious", name: "Suasana Hati: Cemas" },
+    { id: "creative", name: "Suasana Hati: Kreatif" },
   ];
 
   const devices = [
-    { id: "pc", name: "PC" },
-    { id: "mobile", name: "MOBILE" },
+    { id: "pc", name: "Komputer/Laptop" },
+    { id: "mobile", name: "Ponsel" },
   ];
 
   const toggleMood = (moodId) => {
@@ -180,11 +180,11 @@ const GameRecommendationApp = () => {
             <div className="flex items-center">
               <Gamepad2 className="h-8 w-8 text-pink-500 animate-pulse" />
               <div className="ml-3">
-                <h1 className="text-2xl font-bold text-pink-500 font-mono glitch-text">
-                  GAME_SENSE
+                <h1 className="text-2xl font-bold text-pink-500 font-mono">
+                  GameSense
                 </h1>
-                <p className="text-sm text-cyan-400 font-mono">
-                  [MOOD_SCAN::INITIALIZING...]
+                <p className="text-sm text-cyan-400">
+                  Sistem Rekomendasi Game Interaktif
                 </p>
               </div>
             </div>
@@ -195,47 +195,45 @@ const GameRecommendationApp = () => {
       <main className="pt-28 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-pink-500 mb-4 font-mono glitch-text">
-              {"< GAME_SENSE_SCAN />"}
+            <h2 className="text-4xl font-bold text-pink-500 mb-4">
+              Rekomendasi Game
             </h2>
-            <p className="text-lg text-cyan-400 max-w-2xl mx-auto font-mono cyberpunk-scanner">
-              [MOOD_DETECTION_SYSTEM: ONLINE]
+            <p className="text-lg text-cyan-400 max-w-2xl mx-auto">
+              Temukan game yang sesuai dengan suasana hati Anda
             </p>
           </div>
 
           {error && (
-            <div className="mb-8 bg-red-900/50 border border-red-500/50 rounded-xl p-4 glitch-container">
+            <div className="mb-8 bg-red-900/50 border border-red-500/50 rounded-xl p-4">
               <div className="flex">
-                <AlertCircle className="h-5 w-5 text-red-400 animate-pulse" />
+                <AlertCircle className="h-5 w-5 text-red-400" />
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-300">
-                    [ERROR_DETECTED]
+                    Terjadi Kesalahan
                   </h3>
-                  <p className="text-sm text-red-400 mt-1 glitch-text">
-                    {error}
-                  </p>
+                  <p className="text-sm text-red-400 mt-1">{error}</p>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="bg-black/80 shadow-2xl shadow-pink-500/20 rounded-2xl border border-pink-500/30 max-w-3xl mx-auto backdrop-blur-lg cyberpunk-card">
+          <div className="bg-black/80 shadow-2xl shadow-pink-500/20 rounded-2xl border border-pink-500/30 max-w-3xl mx-auto backdrop-blur-lg">
             <form onSubmit={handleSubmit} className="p-8">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-base font-medium text-cyan-400 mb-2 font-mono">
-                    {">> YOUR_MOOD::"}
+                  <label className="block text-base font-medium text-cyan-400 mb-2">
+                    Suasana Hati
                   </label>
                   <div className="relative">
                     <button
                       type="button"
                       onClick={() => setMoodDropdownOpen(!moodDropdownOpen)}
-                      className="w-full bg-black border border-pink-500/50 rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 cyberpunk-input"
+                      className="w-full bg-black border border-pink-500/50 rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
                     >
-                      <span className="text-pink-500 font-mono">
+                      <span className="text-pink-500">
                         {selectedMoods.length > 0
-                          ? `${selectedMoods.length} MOOD_SELECTED`
-                          : "SELECT_CURRENT_MOOD.exe"}
+                          ? `${selectedMoods.length} Suasana Hati Dipilih`
+                          : "Pilih Suasana Hati"}
                       </span>
                       <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-pink-500" />
                     </button>
@@ -266,19 +264,19 @@ const GameRecommendationApp = () => {
                 </div>
 
                 <div>
-                  <label className="block text-base font-medium text-cyan-400 mb-2 font-mono">
-                    {">> DEVICE_SELECTION::"}
+                  <label className="block text-base font-medium text-cyan-400 mb-2">
+                    Perangkat
                   </label>
                   <div className="relative">
                     <button
                       type="button"
                       onClick={() => setDeviceDropdownOpen(!deviceDropdownOpen)}
-                      className="w-full bg-black border border-pink-500/50 rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 cyberpunk-input"
+                      className="w-full bg-black border border-pink-500/50 rounded-xl px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
                     >
-                      <span className="text-pink-500 font-mono">
+                      <span className="text-pink-500">
                         {device
                           ? devices.find((d) => d.id === device)?.name
-                          : "SELECT_GAMING_DEVICE.exe"}
+                          : "Pilih Perangkat"}
                       </span>
                       <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-pink-500" />
                     </button>
@@ -308,15 +306,15 @@ const GameRecommendationApp = () => {
                 <button
                   type="submit"
                   disabled={selectedMoods.length === 0 || !device || loading}
-                  className="w-full bg-pink-500/20 text-pink-500 rounded-xl px-4 py-3 font-mono hover:bg-pink-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 cyberpunk-button"
+                  className="w-full bg-pink-500/20 text-pink-500 rounded-xl px-4 py-3 hover:bg-pink-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center">
                       <Terminal className="animate-pulse h-5 w-5 mr-2" />
-                      SCANNING_GAME_DATABASE...
+                      Mencari Rekomendasi...
                     </span>
                   ) : (
-                    "EXECUTE_GAME_SCAN.exe"
+                    "Cari Rekomendasi Game"
                   )}
                 </button>
               </div>
@@ -327,8 +325,8 @@ const GameRecommendationApp = () => {
             <div ref={resultsRef} className="mt-12 max-w-4xl mx-auto">
               <div className="bg-black/80 shadow-2xl shadow-pink-500/20 rounded-2xl border border-pink-500/30 overflow-hidden backdrop-blur-lg">
                 <div className="border-b border-pink-500/30 bg-black/50 px-6 py-4">
-                  <h3 className="text-xl font-semibold text-pink-500 font-mono glitch-text">
-                    {">> GAME_RECOMMENDATIONS_LOADED"}
+                  <h3 className="text-xl font-semibold text-pink-500 font-mono neon-glow">
+                    Rekomendasi Game
                   </h3>
                 </div>
 
