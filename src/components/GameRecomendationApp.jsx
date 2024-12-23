@@ -27,7 +27,7 @@ const GameRecommendationApp = () => {
     const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "Kunci API tidak dikonfigurasi. Harap atur variabel lingkungan REACT_APP_GEMINI_API_KEY."
+        "API key not configured. Please set the REACT_APP_GEMINI_API_KEY environment variable."
       );
     }
 
@@ -35,26 +35,26 @@ const GameRecommendationApp = () => {
       const genAI = new GoogleGenerativeAI(apiKey);
       return genAI.getGenerativeModel({ model: "gemini-pro" });
     } catch (error) {
-      throw new Error(`Gagal menginisialisasi Gemini AI: ${error.message}`);
+      throw new Error(`Failed to initialize Gemini AI: ${error.message}`);
     }
   };
 
   const moods = [
-    { id: "happy", name: "Suasana Hati: Gembira" },
-    { id: "sad", name: "Suasana Hati: Sedih" },
-    { id: "stressed", name: "Suasana Hati: Tertekan" },
-    { id: "excited", name: "Suasana Hati: Bersemangat" },
-    { id: "bored", name: "Suasana Hati: Bosan" },
-    { id: "lonely", name: "Suasana Hati: Kesepian" },
-    { id: "angry", name: "Suasana Hati: Marah" },
-    { id: "relaxed", name: "Suasana Hati: Santai" },
-    { id: "anxious", name: "Suasana Hati: Cemas" },
-    { id: "creative", name: "Suasana Hati: Kreatif" },
+    { id: "happy", name: "Mood: Happy" },
+    { id: "sad", name: "Mood: Sad" },
+    { id: "stressed", name: "Mood: Stressed" },
+    { id: "excited", name: "Mood: Excited" },
+    { id: "bored", name: "Mood: Bored" },
+    { id: "lonely", name: "Mood: Lonely" },
+    { id: "angry", name: "Mood: Angry" },
+    { id: "relaxed", name: "Mood: Relaxed" },
+    { id: "anxious", name: "Mood: Anxious" },
+    { id: "creative", name: "Mood: Creative" },
   ];
 
   const devices = [
-    { id: "pc", name: "Komputer/Laptop" },
-    { id: "mobile", name: "Ponsel" },
+    { id: "pc", name: "Computer/Laptop" },
+    { id: "mobile", name: "Mobile Phone" },
   ];
 
   const toggleMood = (moodId) => {
@@ -80,10 +80,10 @@ const GameRecommendationApp = () => {
         return parsed;
       }
 
-      throw new Error("Format JSON tidak valid");
+      throw new Error("Invalid JSON format");
     } catch (error) {
       console.error("Error Parsing JSON:", error);
-      throw new Error(`Gagal mengurai rekomendasi: ${error.message}`);
+      throw new Error(`Failed to parse recommendations: ${error.message}`);
     }
   };
 
@@ -105,43 +105,43 @@ const GameRecommendationApp = () => {
       - Mood: ${selectedMoods
         .map((id) => moods.find((m) => m.id === id)?.name)
         .join(", ")}
-      - Device: ${device === "pc" ? "PC/Laptop" : "Ponsel"}
+      - Device: ${device === "pc" ? "PC/Laptop" : "Mobile Phone"}
 
       Answer MUST be in valid JSON with this structure:
       {
         "recommendations": {
           "suggestedGenres": [
             {
-              "name": "Nama Genre",
-              "description": "Mengapa genre ini cocok dengan suasana hati"
+              "name": "Genre Name",
+              "description": "Why this genre matches the mood"
             }
           ],
           "onlineGames": [
             {
-              "title": "Judul Game",
-              "genre": "Genre Game",
-              "description": "Deskripsi singkat game",
+              "title": "Game Title",
+              "genre": "Game Genre",
+              "description": "Brief game description",
               "rating": "1-5",
-              "price": "Gratis/Berbayar",
-              "platform": "Nama platform",
-              "downloadUrl": "URL untuk mengunduh atau membeli game",
-              "storeType": "Steam/Epic/PlayStore/AppStore/dll"
+              "price": "Free/Paid",
+              "platform": "Platform name",
+              "downloadUrl": "URL to download or buy the game",
+              "storeType": "Steam/Epic/PlayStore/AppStore/etc"
             }
           ],
           "offlineGames": [
             {
-              "title": "Judul Game",
-              "genre": "Genre Game",
-              "description": "Deskripsi singkat game",
+              "title": "Game Title",
+              "genre": "Game Genre",
+              "description": "Brief game description",
               "rating": "1-5",
-              "price": "Gratis/Berbayar",
-              "platform": "Nama platform",
-              "downloadUrl": "URL untuk mengunduh atau membeli game",
-              "storeType": "Steam/Epic/PlayStore/AppStore/dll"
+              "price": "Free/Paid",
+              "platform": "Platform name",
+              "downloadUrl": "URL to download or buy the game",
+              "storeType": "Steam/Epic/PlayStore/AppStore/etc"
             }
           ],
-          "moodBoostPotential": "Tinggi/Sedang/Rendah",
-          "recommendations": ["Saran spesifik gaming untuk suasana hati"]
+          "moodBoostPotential": "High/Medium/Low",
+          "recommendations": ["Specific gaming suggestions for the mood"]
         }
       }`;
 
@@ -152,7 +152,7 @@ const GameRecommendationApp = () => {
       setRecommendations(parsedRecommendations.recommendations);
     } catch (error) {
       console.error("Error generating recommendations:", error);
-      setError(`Terjadi kesalahan: ${error.message}`);
+      setError(`An error occurred: ${error.message}`);
     }
 
     setLoading(false);
@@ -184,7 +184,7 @@ const GameRecommendationApp = () => {
                   GameSense
                 </h1>
                 <p className="text-sm text-cyan-400">
-                  Sistem Rekomendasi Game Interaktif
+                  Interactive Game Recommendation System
                 </p>
               </div>
             </div>
@@ -196,10 +196,10 @@ const GameRecommendationApp = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-pink-500 mb-4">
-              Rekomendasi Game
+              Game Recommendations
             </h2>
             <p className="text-lg text-cyan-400 max-w-2xl mx-auto">
-              Temukan game yang sesuai dengan suasana hati Anda
+              Find games that match your current mood
             </p>
           </div>
 
@@ -209,7 +209,7 @@ const GameRecommendationApp = () => {
                 <AlertCircle className="h-5 w-5 text-red-400" />
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-300">
-                    Terjadi Kesalahan
+                    Error Occurred
                   </h3>
                   <p className="text-sm text-red-400 mt-1">{error}</p>
                 </div>
@@ -222,7 +222,7 @@ const GameRecommendationApp = () => {
               <div className="space-y-6">
                 <div>
                   <label className="block text-base font-medium text-cyan-400 mb-2">
-                    Suasana Hati
+                    Mood
                   </label>
                   <div className="relative">
                     <button
@@ -232,8 +232,8 @@ const GameRecommendationApp = () => {
                     >
                       <span className="text-pink-500">
                         {selectedMoods.length > 0
-                          ? `${selectedMoods.length} Suasana Hati Dipilih`
-                          : "Pilih Suasana Hati"}
+                          ? `${selectedMoods.length} Moods Selected`
+                          : "Select Mood"}
                       </span>
                       <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-pink-500" />
                     </button>
@@ -265,7 +265,7 @@ const GameRecommendationApp = () => {
 
                 <div>
                   <label className="block text-base font-medium text-cyan-400 mb-2">
-                    Perangkat
+                    Device
                   </label>
                   <div className="relative">
                     <button
@@ -276,7 +276,7 @@ const GameRecommendationApp = () => {
                       <span className="text-pink-500">
                         {device
                           ? devices.find((d) => d.id === device)?.name
-                          : "Pilih Perangkat"}
+                          : "Select Device"}
                       </span>
                       <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-pink-500" />
                     </button>
@@ -311,10 +311,10 @@ const GameRecommendationApp = () => {
                   {loading ? (
                     <span className="flex items-center justify-center">
                       <Terminal className="animate-pulse h-5 w-5 mr-2" />
-                      Mencari Rekomendasi...
+                      Finding Recommendations...
                     </span>
                   ) : (
-                    "Cari Rekomendasi Game"
+                    "Find Game Recommendations"
                   )}
                 </button>
               </div>
@@ -326,7 +326,7 @@ const GameRecommendationApp = () => {
               <div className="bg-black/80 shadow-2xl shadow-pink-500/20 rounded-2xl border border-pink-500/30 overflow-hidden backdrop-blur-lg">
                 <div className="border-b border-pink-500/30 bg-black/50 px-6 py-4">
                   <h3 className="text-xl font-semibold text-pink-500 font-mono neon-glow">
-                    Rekomendasi Game
+                    Game Recommendations
                   </h3>
                 </div>
 
@@ -441,10 +441,9 @@ const GameRecommendationApp = () => {
 
                   <div className="bg-black/50 border border-pink-500/30 rounded-xl p-6 mt-6">
                     <p className="text-sm text-cyan-400 font-mono">
-                      <strong>[SYSTEM_NOTE]::</strong> Rekomendasi disesuaikan
-                      dengan input mood matrix dan device compatibility. Rating
-                      dan availability dapat bervariasi berdasarkan regional
-                      locks.
+                      <strong>[SYSTEM_NOTE]::</strong> Recommendations are based
+                      on mood matrix input and device compatibility. Ratings and
+                      availability may vary based on regional locks.
                     </p>
                   </div>
                 </div>
